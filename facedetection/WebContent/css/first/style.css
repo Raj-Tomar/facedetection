@@ -1,0 +1,49 @@
+@font-face {
+  font-family: Question and Love;
+  src: url("Candlescript Demo Version.otf");
+}
+body{
+  background: -webkit-linear-gradient(90deg, #283048 10%, #859398 90%); /* Chrome 10+, Saf5.1+ */
+  background:    -moz-linear-gradient(90deg, #283048 10%, #859398 90%); /* FF3.6+ */
+  background:     -ms-linear-gradient(90deg, #283048 10%, #859398 90%); /* IE10 */
+  background:      -o-linear-gradient(90deg, #283048 10%, #859398 90%); /* Opera 11.10+ */
+  background:         linear-gradient(90deg, #283048 10%, #859398 90%); /* W3C */
+}
+.face{
+	border: 4px solid #fff;
+	border-radius: 50%;
+	display: none;
+}
+.picture{
+	border-radius: 8px;
+	padding:3px;
+	border: 2px solid #ffffff;
+}
+.title{
+ font-family: Question and Love;
+ color: #fff;
+ font-size: 3em;
+}
+.title span{
+	color: #8bff64;
+}
+.read{
+	margin:35px 0px 0px 0px;
+}
+.read a{
+	color:#fff;
+}
+.read a:hover{
+	text-decoration: none;
+	color:#fff;
+}
+
+/******** Social sharing *********/
+ul.share-buttons{
+  list-style: none;
+  padding: 0;
+}
+
+ul.share-buttons li{
+  display: inline;
+}

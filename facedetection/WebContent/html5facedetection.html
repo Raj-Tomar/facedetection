@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HTML5 Face Detection</title>
+<link rel="stylesheet" href="css/third/style.css"/>
+</head>
+<body>
+<div class="wrapper">
+	<!-- Our Main Video Element -->
+	<video height="426" width="640" controls autoplay style="width:100px; height:75px;"></video>
+	<a href="#" onclick="App.start('glasses');">Glasses!</a>
+	<br>
+	<!-- Out Canvas Element for output -->
+	<canvas id="output"  height="426" width="515" ></canvas>
+
+	<div class="colours" style="display:none;">
+		<div id="red">
+			<input type="range" min=0 max=255 value=190 class="min">
+			<input type="range" min=0 max=255 value=240 class="max">
+		</div>
+		<div id="green">
+			<input type="range" min=0 max=255 value=0 class="min">
+			<input type="range" min=0 max=255 value=120 class="max">
+		</div>
+		<div id="blue">
+			<input type="range" min=0 max=255 value=90 class="min">
+			<input type="range" min=0 max=255 value=190 class="max">
+		</div>				
+	</div>
+
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/third/ccv.js"></script>
+<script type="text/javascript" src="js/third/face.js"></script>
+<script type="text/javascript" src="js/third/scripts.js"></script>
+<script type="text/javascript" src="js/third/stackblur.js"></script>
+
+<script type="text/javascript">
+function html5glasses() {
+	// Start the clock 
+	var elapsed_time = (new Date()).getTime();
+
+	// Draw the video to canvas
+	ctx.drawImage(video, 0, 0, video.width, video.height, 0, 0, canvas.width, canvas.height);
+
+	// use the face detection library to find the face
+	var comp = ccv.detect_objects({ "canvas" : (ccv.pre(canvas)),
+									"cascade" : cascade,
+									"interval" : 5,
+									"min_neighbors" : 1 });
+
+	// Stop the clock
+	time_dump.innerHTML = "Process time : " + ((new Date()).getTime() - elapsed_time).toString() + "ms";
+
+	// Draw glasses on everyone!
+	for (var i = 0; i < comp.length; i++) {
+		ctx.drawImage(glasses, comp[i].x, comp[i].y,comp[i].width, comp[i].height);
+	}
+}
+
+/* Events */ 
+
+video.addEventListener('play', function() {
+	vidInterval = setInterval(html5glasses,200); 
+});
+
+video.addEventListener('ended', function() {
+	clearInterval(vidInterval);
+	time_dump.innerHTML = "finished";
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Face Detection</title>
+</head>
+
+<link href="css/first/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="css/first/style.css" type="text/css" rel="stylesheet" />
+
+<script src="js/first/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="js/first/jquery.facedetection.min.js" type="text/javascript"></script>
+<script src="js/first/script.js" type="text/javascript"></script>
+
+<body>
+
+<div id="demo">
+	
+	<img class="picture" src="images/img/11.jpg" />
+	<img class="picture" src="images/img/13.jpg" />
+	<img class="picture" src="images/img/14.jpg" />
+	
+	<!--
+	<img class="picture" src="images/img/10.jpg" />
+	<img class="picture" src="images/img/11.jpg" />
+	<img class="picture" src="images/img/12.jpg" />
+	<img class="picture" src="images/img/13.jpg" />
+	<img class="picture" src="images/img/14.jpg" />
+	<img class="picture" src="images/img/15.jpg" />
+	<img class="picture" src="images/img/16.jpg" />
+	<img class="picture" src="images/img/17.jpg" />
+	<img class="picture" src="images/img/18.jpg" />
+	<img class="picture" src="images/img/19.jpg" />
+	<img class="picture" src="images/img/2.jpg" />
+	<img class="picture" src="images/img/22.jpg" />
+	<img class="picture" src="images/img/23.jpg" />
+	<img class="picture" src="images/img/24.jpg" />
+	<img class="picture" src="images/img/25.jpg" />
+	<img class="picture" src="images/img/3.jpg" />
+	<img class="picture" src="images/img/4.jpg" />
+	<img class="picture" src="images/img/5.jpg" />
+	<img class="picture" src="images/img/6.jpg" />
+	<img class="picture" src="images/img/7.jpg" /> 
+	<img class="picture" src="images/img/8.jpg" />
+	<img class="picture" src="images/img/9.jpg" />
+	<img class="picture" src="images/img/couple.jpg" />
+	<img class="picture" src="images/img/couple2.jpg" />
+	<img class="picture" src="images/img/group.jpg" />
+	<img class="picture" src="images/img/group2.jpg" />
+	-->
+</div>
+<button id="detect">Detect</button>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	  $("#detect").click(function(){
+	    $('.picture').faceDetection({
+	    	"grayscale" : true,
+	        complete: function (faces) {
+	        	 console.log(JSON.stringify(faces));
+	        	for (var i = 0, l = faces.length; i < l; i++) {
+	        		placeDiv(faces[i]);
+	        	}
+	        },
+			error: function (code, message) {
+				alert("Unable to detect faces! "+message);
+			}	        
+	    });
+	  })
+	});
+	 
+	function placeDiv(coord) {
+	   jQuery("<div>", {
+	   		class: 'face',
+			css: {
+				position: "absolute",
+				left: coord.positionX - 10 + "px",
+				top: coord.positionY - 10 + "px",
+				width: coord.width + 10 +"px",
+				height: coord.height + 10 +"px",
+			},
+	   }).appendTo(document.body).fadeIn("slow");
+	}   
+</script>
+</body>
+</html>
