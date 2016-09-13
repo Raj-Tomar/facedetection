@@ -35,7 +35,6 @@
 		var detector;
 		var classifier = objectdetect.frontalface;
 		
-		
 		function detectFaces(canvas) {
 			// Detect faces in the image:
 			var rects = detector.detect(canvas);
@@ -44,18 +43,20 @@
 			for (var i = 0; i < rects.length; ++i) {
 				var coord = rects[i];
 				
-				if(coord[4] >= 15 ){
+				console.log(i+"==> "+JSON.stringify(coord))
+				 
+				if( coord[4] >= 2 ){
+					
+					console.log(i+"==> "+JSON.stringify(coord))
+					 
 					context.beginPath();
-					
-					console.log(coord)
-					context.lineWidth = 4;
+					context.lineWidth = 1;
 					//context.lineWidth = '' + coord[4] * .1 ;
-					
 					context.strokeStyle = 'rgba(0, 255, 255, 0.75)';
 					context.rect(coord[0], coord[1], coord[2], coord[3]);
 					context.stroke();	
 				}
-				
+				 
 			}
 		}
 		
