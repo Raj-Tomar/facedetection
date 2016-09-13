@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Image Example</title>
+<meta charset="utf-8">
+<title>Face-Detection Example</title>
 
-	<script src="js/objectdetect/objectdetect.js"></script>
-	<script src="js/objectdetect/objectdetect.frontalface.js"></script>
-	<script src="js/objectdetect/objectdetect.profileface.js"></script>
-	<script src="js/objectdetect/objectdetect.mouth.js"></script>
-	<script src="js/objectdetect/objectdetect.eye.js"></script>
-	<script src="js/objectdetect/objectdetect.nose.js"></script>
+<script src="js/objectdetect/objectdetect.js"></script>
+<script src="js/objectdetect/objectdetect.frontalface.js"></script>
+<script src="js/objectdetect/objectdetect.profileface.js"></script>
+<script src="js/objectdetect/objectdetect.mouth.js"></script>
+<script src="js/objectdetect/objectdetect.eye.js"></script>
+<script src="js/objectdetect/objectdetect.nose.js"></script>
+
+<body>
+	<h1>Detect Faces</h1>
+	<p><canvas id="canvas"></canvas></p>
+	<input type="file" id="file" name="file">
+	<select id="select">
+		<option selected value="frontalface">Frontal Face</option>
+		<option value="profileface">Profile Face</option>
+		<option value="mouth">Mouth</option>
+		<option value="eye">Eye</option>
+		<option value="nose">Nose</option>
+	</select>
 	
-	<script>
+<script>
 	window.onload = function() {
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
@@ -70,17 +82,6 @@
 	}
     </script>
 </head>
-
-<body>
-	<h1>Detect Faces</h1>
-	<p><canvas id="canvas"></canvas></p>
-	<input type="file" id="file" name="file">
-	<select id="select">
-		<option selected value="frontalface">Frontal Face</option>
-		<option value="profileface">Profile Face</option>
-		<option value="mouth">Mouth</option>
-		<option value="eye">Eye</option>
-		<option value="nose">Nose</option>
-	</select>
+	
 </body>
 </html>
