@@ -13,6 +13,68 @@
 <script src="js/objectdetect/objectdetect.eye.js"></script>
 <script src="js/objectdetect/objectdetect.nose.js"></script>
 
+<style type="text/css">
+            #photo
+            {
+                position: relative;
+                width: 100%;
+            }
+
+            .box
+            {
+                position: absolute;
+                display: inline-block;
+                z-index: 999;
+				
+				border-width: 4px;
+                border-color: grey;
+                border-style: solid;
+			}
+
+            .box input
+            {
+                visibility: hidden;
+                max-width: 95%; 
+                position: relative;
+            }
+
+            .boxred
+            {
+				 position: absolute;
+                display: inline-block;
+                z-index: 999;
+				
+				border-width: 4px;
+                border-style: solid;
+                border-color: red !important;
+				
+            }
+			
+			 .boxblue
+            {
+				 position: absolute;
+                display: inline-block;
+                z-index: 999;
+				
+				border-width: 4px;
+                border-style: solid;
+                border-color: steelblue !important;
+				
+            }
+
+            .box:hover input
+            {
+                visibility: none;
+            }
+
+            #picture1
+            {
+                max-width: 100%;
+            }
+			
+        </style>
+
+
 </head>
 
 <body>
@@ -28,12 +90,25 @@
 	</select>
 	
 <script>
+
+var offsetX;
+var offsetY;
+var ctx;
+var rectangleArr = [];
+var coordArr = [];
+
 	window.onload = function() {
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var size = 250;
 		var detector;
 		var classifier = objectdetect.frontalface;
+		
+		ctx = canvas.getContext("2d");
+		var canvasOffset = $("#canvas").offset();
+		offsetX = canvasOffset.left;
+		offsetY = canvasOffset.top;
+		
 		
 		function detectFaces(canvas) {
 			// Detect faces in the image:
@@ -43,20 +118,18 @@
 			for (var i = 0; i < rects.length; ++i) {
 				var coord = rects[i];
 				
-				console.log(i+"==> "+JSON.stringify(coord))
-				 
-				if( coord[4] >= 2 ){
-					
-					console.log(i+"==> "+JSON.stringify(coord))
-					 
+				if( coord[4] >= 7){
+					/*  
 					context.beginPath();
 					context.lineWidth = 1;
 					//context.lineWidth = '' + coord[4] * .1 ;
 					context.strokeStyle = 'rgba(0, 255, 255, 0.75)';
 					context.rect(coord[0], coord[1], coord[2], coord[3]);
 					context.stroke();	
+					 */
+					coordArr.push(coord[4])
+					rectangleArr.push(new rect(i, coord[0], coord[1], coord[2], coord[3], "red", "rgba(0, 255, 255, 0.75)", 1));
 				}
-				 
 			}
 		}
 		
@@ -94,7 +167,105 @@
 	
 		loadImage('images/objectdetect/faces.jpg');
 	}
-    </script>
+	
+	 var rect = (function () {
+
+ 	    // constructor
+ 	    function rect(id, x, y, width, height, fill, stroke, strokewidth) {
+ 	        this.x = x;
+ 	        this.y = y;
+ 	        this.id = id;
+ 	        this.width = width;
+ 	        this.height = height;
+ 	        //this.fill = fill || "gray";
+ 	        this.stroke = stroke || "skyblue";
+ 	        this.strokewidth = strokewidth || 1;
+ 	        this.redraw(this.x, this.y);
+ 	        return (this);
+ 	    }
+ 	    rect.prototype.redraw = function (x, y) {
+ 	        this.x = x || this.x;
+ 	        this.y = y || this.y;
+ 	        this.draw(this.stroke);
+ 	        return (this);
+ 	    }
+ 	    //
+ 	    rect.prototype.highlight = function (x, y) {
+ 	        this.x = x || this.x;
+ 	        this.y = y || this.y;
+ 	        this.draw("orange");
+ 	        return (this);
+ 	    }
+ 	    //
+ 	    rect.prototype.draw = function (stroke) {
+ 	        ctx.save();
+ 	        ctx.beginPath();
+ 	       // ctx.fillStyle = this.fill;
+ 	        ctx.strokeStyle = stroke;
+ 	        ctx.lineWidth = this.strokewidth;
+ 	        ctx.rect(this.x, this.y, this.width, this.height);
+ 	        ctx.stroke();
+ 	       // ctx.fill();
+ 	       ctx.restore();
+ 	    }
+ 	    //
+ 	    rect.prototype.isPointInside = function (x, y, z) {
+ 	        //return (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height);
+ 	    	return (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height && z >= 7);
+ 	    }
+ 	    return rect;
+ 	})();
+	
+	 //
+	 function handleMouseDown(e) {
+	     mouseX = parseInt(e.clientX - offsetX);
+	     mouseY = parseInt(e.clientY - offsetY);
+	     
+	     // Put your mousedown stuff here
+	     var clicked = "";
+	     for (var i = 0; i < rectangleArr.length; i++) {
+	    	 for (var j = 0; j < coordArr.length; j++ ){
+				if(rectangleArr[i].id == j ){
+
+			         if (rectangleArr[i].isPointInside(mouseX, mouseY, coordArr[j])) {
+			             //clicked += rectangleArr[i].id + " ";
+			             console.log(coordArr[j])
+			            alert("Clicked rectangles: " + rectangleArr[i].id );
+			         }	
+				}	    		 
+	    	 }
+	    	 /* 
+	         if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
+	             //clicked += rectangleArr[i].id + " ";
+	            alert("Clicked rectangles: " + rectangleArr[i].id );
+	         } */
+	     }
+	     /* 
+	     if (clicked.length > 0) {
+	         alert("Clicked rectangles: " + clicked);
+	     }  */
+	 }
+	 
+	 //
+	 function handleMouseMove(e) {
+	    mouseX = parseInt(e.clientX - offsetX);
+	    mouseY = parseInt(e.clientY - offsetY);
+	
+	    // Put your mousemove stuff here
+	    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+	    for (var i = 0; i < rectangleArr.length; i++) {
+	        if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
+	        	console.log(mouseX + " "+ mouseY )
+	        	rectangleArr[i].highlight();
+	        } else {
+	        	rectangleArr[i].redraw();
+	        }
+	    }
+	}
+ $("#canvas").click(handleMouseDown);
+ //$("#canvas").mousemove(handleMouseMove);
+    
+</script>
 
 <!-- 	 
 <script type="text/javascript">
