@@ -29,7 +29,6 @@
 	</select>
 	
 <script>
-
 var offsetX;
 var offsetY;
 var ctx;
@@ -109,7 +108,6 @@ var rectangleArr = [];
 
  	    // constructor
  	    function rect(id, x, y, width, height, fill, stroke, strokewidth) {
- 	    	console.log(id)
  	        this.x = x;
  	        this.y = y;
  	        this.id = id;
@@ -159,17 +157,11 @@ var rectangleArr = [];
 	     mouseY = parseInt(e.clientY - offsetY);
 	     
 	     // Put your mousedown stuff here
-	     var clicked = "";
 	     for (var i = 0; i < rectangleArr.length; i++) {
 	         if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
-	             //clicked += rectangleArr[i].id + " ";
-	            console.log("Clicked rectangles: " + rectangleArr[i].id );
+	            alert("Clicked rectangles: " + rectangleArr[i].id );
 	         }
 	     }
-	     /* 
-	     if (clicked.length > 0) {
-	         alert("Clicked rectangles: " + clicked);
-	     }  */
 	 }
 	 
 	 //
@@ -181,7 +173,6 @@ var rectangleArr = [];
 	    // ctx.clearRect(0, 0, canvas.width, canvas.height);
 	    for (var i = 0; i < rectangleArr.length; i++) {
 	        if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
-	        	console.log(mouseX + " "+ mouseY )
 	        	rectangleArr[i].highlight();
 	        } else {
 	        	rectangleArr[i].redraw();
@@ -189,7 +180,7 @@ var rectangleArr = [];
 	    }
 	}
  $("#canvas").click(handleMouseDown);
- //$("#canvas").mousemove(handleMouseMove);
+ $("#canvas").mousemove(handleMouseMove);
     
 </script>
 
