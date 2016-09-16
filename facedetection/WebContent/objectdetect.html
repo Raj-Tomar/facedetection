@@ -13,12 +13,25 @@
 <script src="js/objectdetect/objectdetect.eye.js"></script>
 <script src="js/objectdetect/objectdetect.nose.js"></script>
 
-
+<style type="text/css">
+#voting0{
+	position:absolute;
+	left:20px;
+	top:20px;
+}
+#voting1{
+	position:absolute;
+	left:20px;
+	top:20px;
+}
+</style>
 </head>
 
 <body>
 	<h1>Detect Faces</h1>
 	<p><canvas id="canvas"></canvas></p>
+	<div id="voting0">50</div>
+	<div id="voting1">80</div>
 	<input type="file" id="file" name="file">
 	<select id="select">
 		<option selected value="frontalface">Frontal Face</option>
@@ -170,24 +183,41 @@ var rectangleArr = [];
 	     
 	     var isClicked = false;
 	     // Put your mousedown stuff here
-	   
+	     var img1Left = 0;
+	     var img1Top = 0;
+	     var img2Left = 0;
+	     var img2Top = 0;
 	     
 	     for (var i = 0; i < rectangleArr.length; i++) {
-	    	 
 	    	 
 	         if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
 	        	 rectangleArr[i].highlight();
 	             alert("Clicked rectangles: " + rectangleArr[i].id );
 	             isClicked = true;
 	             new rect(rectangleArr[i].id, rectangleArr[i].x, rectangleArr[i].y+rectangleArr[i].height+4, rectangleArr[i].width, 25, "red", "blue", 4);
+	             img1Left = rectangleArr[i].x;
+	    	     img1Top = (rectangleArr[i].y+rectangleArr[i].height+70);
+	             //var div = document.getElementById('voting0');
+	          	 //div.setAttribute("style","position:absolute; color: green; margin-left:"+rectangleArr[i].x+"px; margin-top:"+(rectangleArr[i].y+rectangleArr[i].height+70)+"px;");
 	         }
 	         else{
 	        	 rectangleArr[i].highlightBlue();
 	        	 new rect(rectangleArr[i].id, rectangleArr[i].x, rectangleArr[i].y+rectangleArr[i].height+4, rectangleArr[i].width, 25, "red", "red", 4);
+	        	 img2Left = rectangleArr[i].x;
+	    	     img2Top = (rectangleArr[i].y+rectangleArr[i].height+70);
+	        	 //var div = document.getElementById('voting1');
+	          	// div.setAttribute("style","position:absolute; color: green; margin-left:"+rectangleArr[i].x+"px; margin-top:"+(rectangleArr[i].y+rectangleArr[i].height+70)+"px;");
 	         }
 	     }
 	     if(isClicked){
 	    	// $("#canvas").unbind("click");
+	    	
+	    	var img1Div = document.getElementById('voting0');
+	    	img1Div.setAttribute("style","position:absolute; color: green; margin-left:"+img1Left+"px; margin-top:"+img1Top+"px;");
+	    	
+	    	var img2Div = document.getElementById('voting1');
+	    	img2Div.setAttribute("style","position:absolute; color: green; margin-left:"+img2Left+"px; margin-top:"+img2Top+"px;");
+	    	
 	     }
 	 }
 	 
