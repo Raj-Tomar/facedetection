@@ -37,7 +37,7 @@ var rectangleArr = [];
 	window.onload = function() {
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
-		var size = 250;
+		var size = 600;
 		var detector;
 		var classifier = objectdetect.frontalface;
 		
@@ -64,7 +64,7 @@ var rectangleArr = [];
 					context.rect(coord[0], coord[1], coord[2], coord[3]);
 					context.stroke();	
 					 */
-					rectangleArr.push(new rect(i, coord[0], coord[1], coord[2], coord[3], "red", "rgba(0, 255, 255, 0.75)", 1));
+					rectangleArr.push(new rect(i, coord[0], coord[1], coord[2], coord[3], "red", "gray", 4));
 				}
 			}
 		}
@@ -101,7 +101,7 @@ var rectangleArr = [];
 		document.getElementById('file').addEventListener('change', handleFileSelect, false);
 		document.getElementById('select').addEventListener('change', handleClassifierSelect, false);
 	
-		loadImage('images/objectdetect/faces.jpg');
+		loadImage('images/img/4.jpg');
 	}
 	
 	 var rect = (function () {
@@ -129,7 +129,14 @@ var rectangleArr = [];
  	    rect.prototype.highlight = function (x, y) {
  	        this.x = x || this.x;
  	        this.y = y || this.y;
- 	        this.draw("orange");
+ 	        this.draw("red");
+ 	        return (this);
+ 	    }
+ 	    //
+ 	    rect.prototype.highlightBlue = function (x, y) {
+ 	        this.x = x || this.x;
+ 	        this.y = y || this.y;
+ 	        this.draw("steelblue");
  	        return (this);
  	    }
  	    //
@@ -146,21 +153,39 @@ var rectangleArr = [];
  	    }
  	    //
  	    rect.prototype.isPointInside = function (x, y) {
- 	        return (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height);
+ 	        return (x >= this.x 
+ 	        	 && x <= this.x + this.width 
+ 	        	 && y >= this.y 
+ 	        	 && y <= this.y + this.height);
  	    }
  	    return rect;
  	})();
 	
 	 //
 	 function handleMouseDown(e) {
-	     mouseX = parseInt(e.clientX - offsetX);
-	     mouseY = parseInt(e.clientY - offsetY);
+	     //mouseX = parseInt(e.clientX - offsetX);
+	     //mouseY = parseInt(e.clientY - offsetY);
+	     mouseX = Math.floor((e.pageX-$("#canvas").offset().left));
+	     mouseY = Math.floor((e.pageY-$("#canvas").offset().top));
 	     
+	     var isClicked = false;
 	     // Put your mousedown stuff here
+	   
+	     
 	     for (var i = 0; i < rectangleArr.length; i++) {
+	    	 
+	    	 
 	         if (rectangleArr[i].isPointInside(mouseX, mouseY)) {
-	            alert("Clicked rectangles: " + rectangleArr[i].id );
+	        	 rectangleArr[i].highlight();
+	             alert("Clicked rectangles: " + rectangleArr[i].id );
+	             isClicked = true;
 	         }
+	         else{
+	        	 rectangleArr[i].highlightBlue();
+	         }
+	     }
+	     if(isClicked){
+	    	// $("#canvas").unbind("click");
 	     }
 	 }
 	 
@@ -168,7 +193,7 @@ var rectangleArr = [];
 	 function handleMouseMove(e) {
 	    mouseX = parseInt(e.clientX - offsetX);
 	    mouseY = parseInt(e.clientY - offsetY);
-	
+		
 	    // Put your mousemove stuff here
 	    // ctx.clearRect(0, 0, canvas.width, canvas.height);
 	    for (var i = 0; i < rectangleArr.length; i++) {
@@ -179,9 +204,15 @@ var rectangleArr = [];
 	        }
 	    }
 	}
- $("#canvas").click(handleMouseDown);
- $("#canvas").mousemove(handleMouseMove);
-    
+ //$("#canvas").click(handleMouseDown);
+ //$("#canvas").mousemove(handleMouseMove);
+ 
+ $(document).ready(function(){
+	 $("#canvas").click(function(event){
+		 handleMouseDown(event);
+	 });	 
+ })
+ 
 </script>
 
 <!-- 	 
