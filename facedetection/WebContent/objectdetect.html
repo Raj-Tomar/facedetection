@@ -179,9 +179,11 @@ var rectangleArr = [];
 	        	 rectangleArr[i].highlight();
 	             alert("Clicked rectangles: " + rectangleArr[i].id );
 	             isClicked = true;
+	             new rect(rectangleArr[i].id, rectangleArr[i].x, rectangleArr[i].y+rectangleArr[i].height+4, rectangleArr[i].width, 25, "red", "blue", 4);
 	         }
 	         else{
 	        	 rectangleArr[i].highlightBlue();
+	        	 new rect(rectangleArr[i].id, rectangleArr[i].x, rectangleArr[i].y+rectangleArr[i].height+4, rectangleArr[i].width, 25, "red", "red", 4);
 	         }
 	     }
 	     if(isClicked){
